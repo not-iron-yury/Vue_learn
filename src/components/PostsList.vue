@@ -1,16 +1,8 @@
 <script setup>
-import { reactive } from 'vue'
-
-const props = defineProps({
-  title: String
+defineProps({
+  title: String,
+  postsData: Array
 })
-
-const postsData = reactive([
-  { id: 1, title: 'Первый заголовок', text: 'Очень яркое и литературное описание первого поста' },
-  { id: 2, title: 'Второй заголовок', text: 'Очень яркое и литературное описание второго поста' },
-  { id: 3, title: 'Третий заголовок', text: 'Очень яркое и литературное описание третьего поста' },
-  { id: 4, title: 'Четвертый заголовок', text: 'Яркое и литературное описание четвертого поста' }
-])
 </script>
 
 <template>
@@ -30,7 +22,7 @@ const postsData = reactive([
 
 <style lang="scss" scoped>
 .posts {
-  max-width: 800px;
+  margin: 0 auto;
   &__title {
     font-size: 40px;
     font-weight: 500;
@@ -55,6 +47,48 @@ const postsData = reactive([
 
   & span {
     font-weight: 700;
+  }
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+
+  & h3 {
+    font-size: 21px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+  & input,
+  textarea {
+    font-size: 16px;
+    outline: none;
+    width: 300px;
+    padding: 9px 15px;
+    margin-bottom: 15px;
+    background: whitesmoke;
+  }
+
+  & textarea {
+    resize: none;
+  }
+}
+
+.btn {
+  padding: 8px 30px;
+  margin: 10px 15px;
+  border: 1px solid pink;
+  color: pink;
+  transition:
+    color 0.3s,
+    border 0.3s;
+
+  &:hover {
+    border: 1px solid white;
+    color: white;
   }
 }
 </style>

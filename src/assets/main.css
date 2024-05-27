@@ -45,6 +45,7 @@ button {
   cursor: pointer;
 }
 /* ====== /сброс стилей ====== */
+
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 16px;
@@ -55,4 +56,5 @@ body {
 
   background-size: cover;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
