@@ -1,4 +1,5 @@
 <script setup>
+import SinglePost from './SinglePost.vue'
 defineProps({
   title: String,
   postsData: Array
@@ -9,13 +10,7 @@ defineProps({
   <div class="posts">
     <h2 class="posts__title">{{ title }}</h2>
     <ul class="posts__list">
-      <li class="post" v-for="post in postsData" :key="post.id">
-        <p class="post__title"><span>Название:</span> {{ post.title }}</p>
-        <p class="post__text">
-          <span>Описание:</span>
-          {{ post.text }}
-        </p>
-      </li>
+      <SinglePost v-for="post in postsData" :post="post" :key="post.id" />
     </ul>
   </div>
 </template>
@@ -29,24 +24,6 @@ defineProps({
     text-align: center;
     text-transform: uppercase;
     margin: 20px auto 30px;
-  }
-}
-
-.post {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  animation: animate-in 1 ease-out forwards;
-
-  margin: 0 auto 20px;
-  padding: 16px;
-
-  & span {
-    font-weight: 700;
   }
 }
 
