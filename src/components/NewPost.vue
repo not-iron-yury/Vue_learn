@@ -28,7 +28,7 @@ const createNewPost = () => {
       maxlength="144"
       placeholder="Короткое описание поста"
     />
-    <button class="btn">Создать</button>
+    <BtnVue :buttonText="'Создать пост'" />
   </form>
 </template>
 
@@ -57,21 +57,6 @@ const createNewPost = () => {
 
   & textarea {
     resize: none;
-  }
-}
-
-.btn {
-  padding: 8px 30px;
-  margin: 10px 15px;
-  border: 1px solid pink;
-  color: pink;
-  transition:
-    color 0.3s,
-    border 0.3s;
-
-  &:hover {
-    border: 1px solid white;
-    color: white;
   }
 }
 </style>

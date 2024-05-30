@@ -2,20 +2,28 @@
 defineProps({
   post: Object
 })
+
+const removePost = (e) => {
+  console.log(e.target.value)
+}
 </script>
 
 <template>
   <li class="post">
-    <p class="post__title"><span>Название:</span> {{ post.title }}</p>
-    <p class="post__text">
-      <span>Описание:</span>
-      {{ post.text }}
-    </p>
+    <div class="post__body">
+      <p class="post__title"><span>Название:</span> {{ post.title }}</p>
+      <p class="post__text">
+        <span>Описание:</span>
+        {{ post.text }}
+      </p>
+    </div>
+    <BtnRemove @click="removePost" :buttonText="'&#x2715;'" />
   </li>
 </template>
 
 <style lang="scss" scoped>
 .post {
+  position: relative;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -31,5 +39,11 @@ defineProps({
   & span {
     font-weight: 700;
   }
+}
+
+.btn-remove {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 </style>
