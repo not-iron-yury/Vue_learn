@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import MyInput from './UI/MyInput.vue'
 
 const inputTitle = ref('')
 const inputText = ref('')
@@ -20,7 +21,8 @@ const createNewPost = () => {
 <template>
   <form @submit.prevent="createNewPost" class="input">
     <h3>Добавить новый анонс</h3>
-    <input v-model="inputTitle" class="input__title" type="text" placeholder="Новый заголовок" />
+    <!-- <input v-model="inputTitle" class="input__title" type="text" placeholder="Новый заголовок" /> -->
+    <MyInput v-model="inputTitle" :className="'input__title'" />
     <textarea
       v-model="inputText"
       class="input__text"
@@ -32,7 +34,7 @@ const createNewPost = () => {
   </form>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .input {
   display: flex;
   flex-direction: column;
@@ -45,17 +47,22 @@ const createNewPost = () => {
     text-transform: uppercase;
     margin-bottom: 15px;
   }
-  & input,
-  textarea {
+  & .input__title,
+  .input__text {
     font-size: 16px;
     outline: none;
     width: 300px;
     padding: 9px 15px;
     margin-bottom: 15px;
     background: whitesmoke;
+    border: 3px solid rgba(0, 255, 255, 0.342);
+
+    &:placeholder-shown {
+      border: 3px solid pink;
+    }
   }
 
-  & textarea {
+  & .input__text {
     resize: none;
   }
 }

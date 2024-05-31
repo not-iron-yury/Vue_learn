@@ -1,5 +1,6 @@
 <script setup>
 import SinglePost from './SinglePost.vue'
+
 defineProps({
   title: String,
   postsData: Array

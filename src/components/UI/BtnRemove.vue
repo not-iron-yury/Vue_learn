@@ -18,7 +18,7 @@ defineProps({
   transition: opacity 0.3s;
 
   &:hover {
-    opacity: 0.8;
+    opacity: 0.6;
   }
 }
 </style>
