@@ -5,13 +5,13 @@ import MyInput from './UI/MyInput.vue'
 const inputTitle = ref('')
 const inputText = ref('')
 let id = 100
-const emit = defineEmits(['response'])
+const emit = defineEmits(['newpost'])
 
 const createNewPost = () => {
   if (!inputTitle.value && !inputText.value) return
 
   const newPost = { id: id++, title: inputTitle.value, text: inputText.value }
-  emit('response', newPost)
+  emit('newpost', newPost)
 
   inputTitle.value = ''
   inputText.value = ''
@@ -64,6 +64,21 @@ const createNewPost = () => {
 
   & .input__text {
     resize: none;
+  }
+}
+
+.btn {
+  padding: 8px 30px;
+  margin: 10px 15px;
+  border: 1px solid pink;
+  color: pink;
+  transition:
+    color 0.3s,
+    border 0.3s;
+
+  &:hover {
+    border: 1px solid white;
+    color: white;
   }
 }
 </style>

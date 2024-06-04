@@ -1,17 +1,22 @@
 <script setup>
 import { ref } from 'vue'
-import { testData } from './data/TestPosts'
+import { posts } from './data/TestPosts'
 import PostsList from './components/PostsList.vue'
 import NewPost from './components/NewPost.vue'
 
 const postsListTitle = ref('Список постов')
-const createNewPost = (newpost) => testData.push(newpost)
+
+const createNewPost = (newpost) => posts.value.push(newpost)
+
+function removePost(post) {
+  posts.value = posts.value.filter((itm) => itm.id !== post.id)
+}
 </script>
 
 <template>
   <main class="main">
-    <NewPost @response="createNewPost" />
-    <PostsList :postsData="testData" :title="postsListTitle" />
+    <NewPost @newpost="createNewPost" />
+    <PostsList :postsData="posts" :title="postsListTitle" @remove="removePost" />
   </main>
 </template>
 

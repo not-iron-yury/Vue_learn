@@ -1,6 +1,6 @@
-import { reactive } from 'vue'
+import { ref } from 'vue'
 
-export const testData = reactive([
+export const posts = ref([
   { id: 1, title: 'Первый заголовок', text: 'Очень яркое и литературное описание первого поста' },
   { id: 2, title: 'Второй заголовок', text: 'Очень яркое и литературное описание второго поста' },
   { id: 3, title: 'Третий заголовок', text: 'Очень яркое и литературное описание третьего поста' },

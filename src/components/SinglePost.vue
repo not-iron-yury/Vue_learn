@@ -3,9 +3,7 @@ defineProps({
   post: Object
 })
 
-const removePost = (e) => {
-  console.log(e.target.value)
-}
+const emit = defineEmits(['remove'])
 </script>
 
 <template>
@@ -17,7 +15,7 @@ const removePost = (e) => {
         {{ post.text }}
       </p>
     </div>
-    <BtnRemove @click="removePost" :buttonText="'&#x2715;'" />
+    <BtnRemove @click="emit('remove', post)" :buttonText="'&#x2715;'" />
   </li>
 </template>
 
