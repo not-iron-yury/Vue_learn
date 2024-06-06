@@ -20,9 +20,13 @@ const createNewPost = () => {
 
 <template>
   <form @submit.prevent="createNewPost" class="input">
-    <h3>Добавить новый анонс</h3>
-    <!-- <input v-model="inputTitle" class="input__title" type="text" placeholder="Новый заголовок" /> -->
-    <MyInput v-model="inputTitle" :className="'input__title'" />
+    <h3>Добавить новый пост</h3>
+    <MyInput
+      v-focus
+      v-model="inputTitle"
+      :className="'input__title'"
+      :placeholder="'Новый заголовок'"
+    />
     <textarea
       v-model="inputText"
       class="input__text"
@@ -30,7 +34,7 @@ const createNewPost = () => {
       maxlength="144"
       placeholder="Короткое описание поста"
     />
-    <BtnVue :buttonText="'Создать пост'" />
+    <BtnVue :buttonText="'Отправить'" />
   </form>
 </template>
 

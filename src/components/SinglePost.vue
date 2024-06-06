@@ -31,17 +31,14 @@ const emit = defineEmits(['remove'])
   border-radius: 4px;
   animation: animate-in 1 ease-out forwards;
 
+  word-break: break-all;
   margin: 0 auto 20px;
   padding: 16px;
 
   & span {
     font-weight: 700;
   }
-}
-
-.btn-remove {
-  position: absolute;
-  right: 0;
-  top: 0;
+  &__text {
+  }
 }
 </style>

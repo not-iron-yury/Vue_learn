@@ -25,7 +25,9 @@ const emit = defineEmits(['remove'])
 
 <style lang="scss" scoped>
 .posts {
+  width: 100%;
   margin: 0 auto;
+
   &__title {
     font-size: 40px;
     font-weight: 500;
@@ -37,6 +39,7 @@ const emit = defineEmits(['remove'])
     font-size: 30px;
     font-weight: 500;
     text-align: center;
+    margin-bottom: 30px;
   }
 }
 </style>

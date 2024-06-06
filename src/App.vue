@@ -5,24 +5,41 @@ import PostsList from './components/PostsList.vue'
 import NewPost from './components/NewPost.vue'
 
 const postsListTitle = ref('Список постов')
+const showDialog = ref(false)
 
-const createNewPost = (newpost) => posts.value.push(newpost)
-
-function removePost(post) {
+const createNewPost = (newpost) => {
+  posts.value.push(newpost)
+  showDialog.value = false
+}
+const removePost = (post) => {
   posts.value = posts.value.filter((itm) => itm.id !== post.id)
+}
+const openDialog = () => (showDialog.value = true)
+
+const hideDialog = (event) => {
+  if (showDialog.value && event.key === 'Escape') {
+    showDialog.value = false
+  }
 }
 </script>
 
 <template>
-  <main class="main">
-    <NewPost @newpost="createNewPost" />
+  <main class="main" @keydown="hideDialog">
+    <MyDialog v-model:show="showDialog">
+      <NewPost @newpost="createNewPost" />
+    </MyDialog>
+
     <PostsList :postsData="posts" :title="postsListTitle" @remove="removePost" />
+    <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
   </main>
 </template>
 
 <style lang="scss">
 .main {
-  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 800px;
   padding: 25px 15px;
   margin: 0 auto;
 }
@@ -50,21 +67,6 @@ function removePost(post) {
 
   & textarea {
     resize: none;
-  }
-}
-
-.btn {
-  padding: 8px 30px;
-  margin: 10px 15px;
-  border: 1px solid pink;
-  color: pink;
-  transition:
-    color 0.3s,
-    border 0.3s;
-
-  &:hover {
-    border: 1px solid white;
-    color: white;
   }
 }
 </style>
