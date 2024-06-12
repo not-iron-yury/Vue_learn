@@ -1,20 +1,38 @@
 <script setup>
-import { ref } from 'vue'
-import { posts } from './data/TestPosts'
+import { onMounted, ref } from 'vue'
+// import { posts } from './data/TestPosts'
+import { fetchPosts } from './data/Posts'
 import PostsList from './components/PostsList.vue'
 import NewPost from './components/NewPost.vue'
 
 const postsListTitle = ref('Список постов')
 const showDialog = ref(false)
+const posts = ref([])
+const postsOK = ref(true)
 
-const createNewPost = (newpost) => {
+// ==================== fetch ==================== //
+onMounted(() => {
+  fetchPosts(10, 1) //limit = 10, page = 1
+    .then((data) => (posts.value = data))
+    .catch((error) => {
+      postsOK.value = false
+      console.log('Данные не подгрузились', error)
+    })
+})
+
+// ================= list changes ================ //
+const addNewPost = (newpost) => {
   posts.value.push(newpost)
   showDialog.value = false
 }
+
 const removePost = (post) => {
   posts.value = posts.value.filter((itm) => itm.id !== post.id)
 }
-const openDialog = () => (showDialog.value = true)
+
+const openDialog = () => {
+  showDialog.value = true
+}
 
 const hideDialog = (event) => {
   if (showDialog.value && event.key === 'Escape') {
@@ -26,11 +44,14 @@ const hideDialog = (event) => {
 <template>
   <main class="main" @keydown="hideDialog">
     <MyDialog v-model:show="showDialog">
-      <NewPost @newpost="createNewPost" />
+      <NewPost @newpost="addNewPost" />
     </MyDialog>
 
-    <PostsList :postsData="posts" :title="postsListTitle" @remove="removePost" />
-    <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
+    <div v-if="postsOK" class="posts-list">
+      <PostsList :postsData="posts" :title="postsListTitle" @remove="removePost" />
+      <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
+    </div>
+    <p v-else class="posts-ok">Произошла ошибка. Перезагрузите страницу.</p>
   </main>
 </template>
 
@@ -68,5 +89,17 @@ const hideDialog = (event) => {
   & textarea {
     resize: none;
   }
+}
+.posts-ok {
+  position: relative;
+  top: 45vh;
+  font-size: 25px;
+  color: rgb(245, 245, 245);
+  text-align: center;
+}
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

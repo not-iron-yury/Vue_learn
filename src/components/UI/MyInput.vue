@@ -7,7 +7,8 @@ const model = defineModel()
 </script>
 
 <template>
-  <input v-model="model" :class="className" type="text" :placeholder="placeholder" />
+  <!-- модификатор lazy для v-model -->
+  <input v-model.lazy="model" :class="className" type="text" :placeholder="placeholder" />
 </template>
 
 <style></style>

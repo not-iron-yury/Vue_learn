@@ -12,7 +12,7 @@ const emit = defineEmits(['remove'])
       <p class="post__title"><span>Название:</span> {{ post.title }}</p>
       <p class="post__text">
         <span>Описание:</span>
-        {{ post.text }}
+        {{ post.body }}
       </p>
     </div>
     <BtnRemove @click="emit('remove', post)" :buttonText="'&#x2715;'" />

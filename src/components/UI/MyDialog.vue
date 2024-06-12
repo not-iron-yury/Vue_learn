@@ -3,18 +3,19 @@ defineProps({
   show: Boolean
 })
 
-const emit = defineEmits(['update'])
+const emit = defineEmits(['update:show'])
 
-// const hideDialog = () => {         // вместо такой функции можно слушателю сразу передать emit
-//   emit('update:show', false)
-// }
+// вместо этой функции, можно слушателю сразу передать emit
+const hideDialog = () => {
+  emit('update:show', false) // @click="emit('update:show', false)"
+}
 </script>
 
 <template>
-  <div class="dialog" v-if="show" @click="emit('update:show', false)">
+  <div class="dialog" v-if="show" @click="hideDialog">
     <!-- @click.stop остановка всплытия -->
     <div class="dialog__content" @click.stop>
-      <BtnRemove @click="emit('update:show', false)" :buttonText="'&#x2715;'" />
+      <BtnRemove @click="hideDialog" :buttonText="'&#x2715;'" />
       <slot></slot>
     </div>
   </div>
