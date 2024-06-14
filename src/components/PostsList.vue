@@ -3,7 +3,8 @@ import SinglePost from './SinglePost.vue'
 
 defineProps({
   title: String,
-  postsData: Array
+  postsData: Array,
+  isPostsLoaded: Boolean
 })
 const emit = defineEmits(['remove'])
 </script>
@@ -11,7 +12,8 @@ const emit = defineEmits(['remove'])
 <template>
   <div class="posts">
     <h2 class="posts__title">{{ title }}</h2>
-    <ul class="posts__list" v-if="postsData.length > 0">
+    <!-- если массив НЕ пустой -->
+    <ul class="posts__list" v-if="postsData.length > 0 && isPostsLoaded">
       <SinglePost
         v-for="post in postsData"
         :post="post"
@@ -19,6 +21,7 @@ const emit = defineEmits(['remove'])
         @remove="emit('remove', post)"
       />
     </ul>
+    <!-- если массив пустой -->
     <h3 class="posts__subtitle" v-else>постов пока нет, напиши первый</h3>
   </div>
 </template>

@@ -8,16 +8,22 @@ import NewPost from './components/NewPost.vue'
 const postsListTitle = ref('Список постов')
 const showDialog = ref(false)
 const posts = ref([])
-const postsOK = ref(true)
+const isPostsLoaded = ref(false)
+const isFetchedPosts = ref(true)
 
 // ==================== fetch ==================== //
 onMounted(() => {
-  fetchPosts(10, 1) //limit = 10, page = 1
-    .then((data) => (posts.value = data))
-    .catch((error) => {
-      postsOK.value = false
-      console.log('Данные не подгрузились', error)
-    })
+  setTimeout(() => {
+    fetchPosts(10, 1) //limit = 10, page = 1
+      .then((data) => {
+        posts.value = data
+        isPostsLoaded.value = true
+      })
+      .catch((error) => {
+        isFetchedPosts.value = false
+        console.log('Данные не подгрузились', error)
+      })
+  }, 2000)
 })
 
 // ================= list changes ================ //
@@ -47,11 +53,25 @@ const hideDialog = (event) => {
       <NewPost @newpost="addNewPost" />
     </MyDialog>
 
-    <div v-if="postsOK" class="posts-list">
-      <PostsList :postsData="posts" :title="postsListTitle" @remove="removePost" />
+    <div v-if="isPostsLoaded" class="posts-list">
+      <PostsList
+        @remove="removePost"
+        :postsData="posts"
+        :title="postsListTitle"
+        :isPostsLoaded="isPostsLoaded"
+      />
       <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
     </div>
-    <p v-else class="posts-ok">Произошла ошибка. Перезагрузите страницу.</p>
+    <!-- Если данные еще загружаются и ошибка не возникла -->
+    <div v-else-if="isFetchedPosts" class="posts-loaded">
+      <p>Данные загружаются. Сейчас всё будет ОК.</p>
+      <p>Здесь могла быть ваша реклама</p>
+    </div>
+    <!-- Если возникла ошибка при получении данных -->
+    <div v-else-if="!isFetchedPosts" class="posts-loaded">
+      <p>Данные проебались. Не будет ОК.</p>
+      <p>Здесь могла быть ваша реклама</p>
+    </div>
   </main>
 </template>
 
@@ -90,12 +110,16 @@ const hideDialog = (event) => {
     resize: none;
   }
 }
-.posts-ok {
+.posts-loaded {
   position: relative;
-  top: 45vh;
+  top: 43vh;
   font-size: 25px;
   color: rgb(245, 245, 245);
   text-align: center;
+  & :nth-child(2) {
+    margin-top: 20px;
+    font-size: 14px;
+  }
 }
 .posts-list {
   display: flex;

@@ -10,7 +10,7 @@ const emit = defineEmits(['newpost'])
 const createNewPost = () => {
   if (!inputTitle.value && !inputText.value) return
 
-  const newPost = { id: id++, title: inputTitle.value, text: inputText.value }
+  const newPost = { id: id++, title: inputTitle.value, body: inputText.value }
   emit('newpost', newPost)
 
   inputTitle.value = ''
