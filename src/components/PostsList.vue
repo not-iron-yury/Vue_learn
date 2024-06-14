@@ -2,7 +2,6 @@
 import SinglePost from './SinglePost.vue'
 
 defineProps({
-  title: String,
   postsData: Array,
   isPostsLoaded: Boolean
 })
@@ -11,7 +10,6 @@ const emit = defineEmits(['remove'])
 
 <template>
   <div class="posts">
-    <h2 class="posts__title">{{ title }}</h2>
     <!-- если массив НЕ пустой -->
     <ul class="posts__list" v-if="postsData.length > 0 && isPostsLoaded">
       <SinglePost
@@ -30,14 +28,6 @@ const emit = defineEmits(['remove'])
 .posts {
   width: 100%;
   margin: 0 auto;
-
-  &__title {
-    font-size: 40px;
-    font-weight: 500;
-    text-align: center;
-    text-transform: uppercase;
-    margin: 20px auto 30px;
-  }
   &__subtitle {
     font-size: 30px;
     font-weight: 500;

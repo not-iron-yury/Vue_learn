@@ -5,15 +5,16 @@ defineProps({
 
 const emit = defineEmits(['update:show'])
 
-// вместо этой функции, можно слушателю сразу передать emit
+// функцию можно заменить в слушателе на "$emit('update:show', false)"
+// пример: @click="$emit('update:show', false)"
 const hideDialog = () => {
-  emit('update:show', false) // @click="emit('update:show', false)"
+  emit('update:show', false)
 }
 </script>
 
 <template>
   <div class="dialog" v-if="show" @click="hideDialog">
-    <!-- @click.stop остановка всплытия -->
+    <!-- остановка всплытия @click.stop -->
     <div class="dialog__content" @click.stop>
       <BtnRemove @click="hideDialog" :buttonText="'&#x2715;'" />
       <slot></slot>

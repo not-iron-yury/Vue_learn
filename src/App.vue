@@ -5,12 +5,17 @@ import { fetchPosts } from './data/Posts'
 import PostsList from './components/PostsList.vue'
 import NewPost from './components/NewPost.vue'
 
-const postsListTitle = ref('Список постов')
 const showDialog = ref(false)
+//------------------------------------------------//
 const posts = ref([])
 const isPostsLoaded = ref(false)
 const isFetchedPosts = ref(true)
-
+//------------------------------------------------//
+const selectOptions = [
+  { name: 'А-Я', value: 'up-down' },
+  { name: 'Я-А', value: 'down-up' }
+]
+const postsSortType = ref('')
 // ==================== fetch ==================== //
 onMounted(() => {
   setTimeout(() => {
@@ -23,7 +28,7 @@ onMounted(() => {
         isFetchedPosts.value = false
         console.log('Данные не подгрузились', error)
       })
-  }, 2000)
+  }, 0)
 })
 
 // ================= list changes ================ //
@@ -45,6 +50,14 @@ const hideDialog = (event) => {
     showDialog.value = false
   }
 }
+
+const sortPosts = (typesort) => {
+  if (typesort === 'up-down') {
+    posts.value.sort((a, b) => a.title.localeCompare(b.title))
+  } else if (typesort === 'down-up') {
+    posts.value.sort((a, b) => b.title.localeCompare(a.title))
+  }
+}
 </script>
 
 <template>
@@ -53,15 +66,17 @@ const hideDialog = (event) => {
       <NewPost @newpost="addNewPost" />
     </MyDialog>
 
-    <div v-if="isPostsLoaded" class="posts-list">
-      <PostsList
-        @remove="removePost"
-        :postsData="posts"
-        :title="postsListTitle"
-        :isPostsLoaded="isPostsLoaded"
-      />
-      <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
+    <h1 class="main__title">Список постов</h1>
+    <div class="main__menu">
+      <MySelect @sortedPosts="(typesort) => sortPosts(typesort)" :options="selectOptions" />
     </div>
+
+    <div v-if="isPostsLoaded" class="posts-list">
+      <PostsList @remove="removePost" :postsData="posts" :isPostsLoaded="isPostsLoaded" />
+      <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
+      <!-- <BtnVue :buttonText="'Сортировка'" @click="sortPosts" /> -->
+    </div>
+
     <!-- Если данные еще загружаются и ошибка не возникла -->
     <div v-else-if="isFetchedPosts" class="posts-loaded">
       <p>Данные загружаются. Сейчас всё будет ОК.</p>
@@ -83,6 +98,22 @@ const hideDialog = (event) => {
   width: 800px;
   padding: 25px 15px;
   margin: 0 auto;
+
+  &__title {
+    font-size: 40px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 20px auto 30px;
+  }
+  &__menu {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
 }
 .input {
   display: flex;
@@ -112,7 +143,7 @@ const hideDialog = (event) => {
 }
 .posts-loaded {
   position: relative;
-  top: 43vh;
+  top: 30vh;
   font-size: 25px;
   color: rgb(245, 245, 245);
   text-align: center;
@@ -125,5 +156,6 @@ const hideDialog = (event) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 </style>

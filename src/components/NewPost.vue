@@ -5,6 +5,7 @@ import MyInput from './UI/MyInput.vue'
 const inputTitle = ref('')
 const inputText = ref('')
 let id = 100
+
 const emit = defineEmits(['newpost'])
 
 const createNewPost = () => {
@@ -21,7 +22,14 @@ const createNewPost = () => {
 <template>
   <form @submit.prevent="createNewPost" class="input">
     <h3>Добавить новый пост</h3>
+    <!-- Вариант 1 (двустороннего связывания инпута с родителем) -->
+    <!-- <MyInput v-model:title="inputTitle" :className="'input__title'" :placeholder="'Новый заголовок'"/> -->
+    <!-- / Вариант 1  -->
+
+    <!-- Вариант 2  -->
     <MyInput v-model="inputTitle" :className="'input__title'" :placeholder="'Новый заголовок'" />
+    <!-- / Вариант 2  -->
+
     <textarea
       v-model="inputText"
       class="input__text"
