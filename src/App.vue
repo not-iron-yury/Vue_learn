@@ -64,18 +64,13 @@ const hideDialog = (event) => {
 // })
 
 const sortedPost = computed(() => {
-  return selectedSort.value === 'up-down'
-    ? [...posts.value].sort((a, b) => a.title.localeCompare(b.title))
-    : selectedSort.value === 'down-up'
-      ? [...posts.value].sort((a, b) => b.title.localeCompare(a.title))
-      : posts.value
-
-  // такой вариант не работает, и хз почему.
-  // if (selectedSort.value === 'up-down') {
-  //   return [...posts.value].sort((a, b) => a.title.localeCompare(b.title))
-  // } else if (selectedSort.value === 'down-up') {
-  //   return [...posts.value].sort((a, b) => b.title.localeCompare(a.title))
-  // }
+  if (selectedSort.value === 'up-down') {
+    return [...posts.value].sort((a, b) => a.title.localeCompare(b.title))
+  } else if (selectedSort.value === 'down-up') {
+    return [...posts.value].sort((a, b) => b.title.localeCompare(a.title))
+  } else return posts.value // вот этот вариант обязателен,
+  // т.к. вычисляемое значение sortedPost мы передаем компоненту PostsList вместо исходного списка постов
+  // если сортировка не выбрана, то должен возвращаться исходный (не сортированный) вариант списка.
 })
 </script>
 
