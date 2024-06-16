@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch, ref } from 'vue'
+import { onMounted, watch, computed, ref } from 'vue'
 // import { posts } from './data/TestPosts'
 import { fetchPosts } from './data/Posts'
 import PostsList from './components/PostsList.vue'
@@ -51,14 +51,31 @@ const hideDialog = (event) => {
   }
 }
 
-watch(selectedSort, (newValue, prevValue) => {
-  console.log(prevValue, newValue) // в .value необходимости нет
+// ==================== sort posts ==================== //
 
-  if (newValue === 'up-down') {
-    posts.value.sort((a, b) => a.title.localeCompare(b.title))
-  } else if (newValue === 'down-up') {
-    posts.value.sort((a, b) => b.title.localeCompare(a.title))
-  }
+// watch(selectedSort, (newValue, prevValue) => {
+//   console.log(prevValue, newValue) // в .value необходимости нет
+
+//   if (newValue === 'up-down') {
+//     posts.value.sort((a, b) => a.title.localeCompare(b.title))
+//   } else if (newValue === 'down-up') {
+//     posts.value.sort((a, b) => b.title.localeCompare(a.title))
+//   }
+// })
+
+const sortedPost = computed(() => {
+  return selectedSort.value === 'up-down'
+    ? [...posts.value].sort((a, b) => a.title.localeCompare(b.title))
+    : selectedSort.value === 'down-up'
+      ? [...posts.value].sort((a, b) => b.title.localeCompare(a.title))
+      : posts.value
+
+  // такой вариант не работает, и хз почему.
+  // if (selectedSort.value === 'up-down') {
+  //   return [...posts.value].sort((a, b) => a.title.localeCompare(b.title))
+  // } else if (selectedSort.value === 'down-up') {
+  //   return [...posts.value].sort((a, b) => b.title.localeCompare(a.title))
+  // }
 })
 </script>
 
@@ -75,7 +92,8 @@ watch(selectedSort, (newValue, prevValue) => {
     </div>
 
     <div v-if="isPostsLoaded" class="posts-list">
-      <PostsList @remove="removePost" :postsData="posts" :isPostsLoaded="isPostsLoaded" />
+      <!-- <PostsList @remove="removePost" :postsData="posts" :isPostsLoaded="isPostsLoaded" /> -->
+      <PostsList @remove="removePost" :postsData="sortedPost" :isPostsLoaded="isPostsLoaded" />
       <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
     </div>
 
