@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, watch, ref } from 'vue'
 // import { posts } from './data/TestPosts'
 import { fetchPosts } from './data/Posts'
 import PostsList from './components/PostsList.vue'
@@ -15,7 +15,7 @@ const selectOptions = [
   { name: 'А-Я', value: 'up-down' },
   { name: 'Я-А', value: 'down-up' }
 ]
-const postsSortType = ref('')
+const selectedSort = ref('')
 // ==================== fetch ==================== //
 onMounted(() => {
   setTimeout(() => {
@@ -51,13 +51,15 @@ const hideDialog = (event) => {
   }
 }
 
-const sortPosts = (typesort) => {
-  if (typesort === 'up-down') {
+watch(selectedSort, (newValue, prevValue) => {
+  console.log(prevValue, newValue) // в .value необходимости нет
+
+  if (newValue === 'up-down') {
     posts.value.sort((a, b) => a.title.localeCompare(b.title))
-  } else if (typesort === 'down-up') {
+  } else if (newValue === 'down-up') {
     posts.value.sort((a, b) => b.title.localeCompare(a.title))
   }
-}
+})
 </script>
 
 <template>
@@ -68,13 +70,13 @@ const sortPosts = (typesort) => {
 
     <h1 class="main__title">Список постов</h1>
     <div class="main__menu">
-      <MySelect @sortedPosts="(typesort) => sortPosts(typesort)" :options="selectOptions" />
+      <!-- <MySelect @sortedPosts="(typesort) => sortPosts(typesort)" :options="selectOptions" /> -->
+      <MySelect v-model="selectedSort" :options="selectOptions" />
     </div>
 
     <div v-if="isPostsLoaded" class="posts-list">
       <PostsList @remove="removePost" :postsData="posts" :isPostsLoaded="isPostsLoaded" />
       <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
-      <!-- <BtnVue :buttonText="'Сортировка'" @click="sortPosts" /> -->
     </div>
 
     <!-- Если данные еще загружаются и ошибка не возникла -->

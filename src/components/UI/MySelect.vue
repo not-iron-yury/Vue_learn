@@ -1,11 +1,17 @@
 <script setup>
 defineProps({
-  options: Array
+  modelValue: String,
+  options: {
+    type: Array,
+    default: () => []
+  }
 })
+const model = defineModel()
 </script>
 
 <template>
-  <select @change="$emit('sortedPosts', $event.target.value)">
+  <!-- <select @change="$emit('sortedPosts', $event.target.value)"> -->
+  <select v-model="model" @change="$emit('update:modelValue', $event.target.value)">
     <option disabled selected value="">Сортировочка</option>
     <option v-for="option in options" :key="option.value" :value="option.value">
       {{ option.name }}
