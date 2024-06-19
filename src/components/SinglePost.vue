@@ -38,7 +38,5 @@ const emit = defineEmits(['remove'])
   & span {
     font-weight: 700;
   }
-  &__text {
-  }
 }
 </style>

@@ -12,13 +12,16 @@ const emit = defineEmits(['remove'])
   <div class="posts">
     <!-- если массив НЕ пустой -->
     <ul class="posts__list" v-if="postsData.length > 0 && isPostsLoaded">
-      <SinglePost
-        v-for="post in postsData"
-        :post="post"
-        :key="post.id"
-        @remove="emit('remove', post)"
-      />
+      <transition-group name="list">
+        <SinglePost
+          v-for="post in postsData"
+          :post="post"
+          :key="post.id"
+          @remove="emit('remove', post)"
+        />
+      </transition-group>
     </ul>
+
     <!-- если массив пустой -->
     <h3 class="posts__subtitle" v-else>постов пока нет, напиши первый</h3>
   </div>
@@ -34,5 +37,15 @@ const emit = defineEmits(['remove'])
     text-align: center;
     margin-bottom: 30px;
   }
+}
+.list-move, /* применять переход к движущимся элементам */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
