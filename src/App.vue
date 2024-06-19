@@ -28,7 +28,7 @@ onMounted(() => {
         isFetchedPosts.value = false
         console.log('Данные не подгрузились', error)
       })
-  }, 0)
+  }, 2000)
 })
 
 // ================= list changes ================ //
@@ -80,13 +80,12 @@ const sortedPost = computed(() => {
       <NewPost @newpost="addNewPost" />
     </MyDialog>
 
-    <h1 class="main__title">Список постов</h1>
-    <div class="main__menu">
-      <!-- <MySelect @sortedPosts="(typesort) => sortPosts(typesort)" :options="selectOptions" /> -->
-      <MySelect v-model="selectedSort" :options="selectOptions" />
-    </div>
-
     <div v-if="isPostsLoaded" class="posts-list">
+      <h1 class="main__title">Список постов</h1>
+      <div class="main__menu">
+        <!-- <MySelect @sortedPosts="(typesort) => sortPosts(typesort)" :options="selectOptions" /> -->
+        <MySelect v-model="selectedSort" :options="selectOptions" />
+      </div>
       <!-- <PostsList @remove="removePost" :postsData="posts" :isPostsLoaded="isPostsLoaded" /> -->
       <PostsList @remove="removePost" :postsData="sortedPost" :isPostsLoaded="isPostsLoaded" />
       <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
