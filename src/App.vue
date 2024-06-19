@@ -4,6 +4,7 @@ import { onMounted, watch, computed, ref } from 'vue'
 import { fetchPosts } from './data/Posts'
 import PostsList from './components/PostsList.vue'
 import NewPost from './components/NewPost.vue'
+import MyInput from './components/UI/MyInput.vue'
 
 const showDialog = ref(false)
 //------------------------------------------------//
@@ -28,7 +29,7 @@ onMounted(() => {
         isFetchedPosts.value = false
         console.log('Данные не подгрузились', error)
       })
-  }, 2000)
+  }, 0)
 })
 
 // ================= list changes ================ //
@@ -72,6 +73,22 @@ const sortedPost = computed(() => {
   // т.к. вычисляемое значение sortedPost мы передаем компоненту PostsList вместо исходного списка постов
   // если сортировка не выбрана, то должен возвращаться исходный (не сортированный) вариант списка.
 })
+
+// ==================== search ==================== //
+const searchQuery = ref('')
+
+// поиск обрабатывает onChange событие, поэтому после ввода критерия поиска, нужно нажать enter
+const sortedAndSearchedPost = computed(() => {
+  if (searchQuery.value) {
+    return sortedPost.value.filter((item) =>
+      item.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+  } else {
+    return sortedPost.value
+  }
+})
+
+// ================================================ //
 </script>
 
 <template>
@@ -85,9 +102,14 @@ const sortedPost = computed(() => {
       <div class="main__menu">
         <!-- <MySelect @sortedPosts="(typesort) => sortPosts(typesort)" :options="selectOptions" /> -->
         <MySelect v-model="selectedSort" :options="selectOptions" />
+        <MyInput v-model="searchQuery" class="input__search" :placeholder="'Поиск...'" />
       </div>
       <!-- <PostsList @remove="removePost" :postsData="posts" :isPostsLoaded="isPostsLoaded" /> -->
-      <PostsList @remove="removePost" :postsData="sortedPost" :isPostsLoaded="isPostsLoaded" />
+      <PostsList
+        @remove="removePost"
+        :postsData="sortedAndSearchedPost"
+        :isPostsLoaded="isPostsLoaded"
+      />
       <BtnVue :buttonText="'Создать пост'" @click="openDialog" />
     </div>
 
@@ -141,18 +163,12 @@ const sortedPost = computed(() => {
     text-transform: uppercase;
     margin-bottom: 15px;
   }
-  & input,
-  textarea {
+  &__search {
     font-size: 16px;
     outline: none;
-    width: 300px;
+    width: 250px;
     padding: 9px 15px;
-    margin-bottom: 15px;
     background: whitesmoke;
-  }
-
-  & textarea {
-    resize: none;
   }
 }
 .posts-loaded {
