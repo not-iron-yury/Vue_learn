@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, watch, computed, ref } from 'vue'
 // import { posts } from './data/TestPosts'
-import { fetchPosts } from './data/Posts'
+//import { fetchPosts } from './data/Posts'
 import PostsList from './components/PostsList.vue'
 import NewPost from './components/NewPost.vue'
 import MyInput from './components/UI/MyInput.vue'
@@ -11,25 +11,38 @@ const showDialog = ref(false)
 const posts = ref([])
 const isPostsLoaded = ref(false)
 const isFetchedPosts = ref(true)
-//------------------------------------------------//
+
+// ==================== select ==================== //
 const selectOptions = [
   { name: 'А-Я', value: 'up-down' },
   { name: 'Я-А', value: 'down-up' }
 ]
 const selectedSort = ref('')
+
+// ================== pagination ================== //
+const limit = ref(10)
+const page = ref(1)
+const totalPages = ref(0)
 // ==================== fetch ==================== //
+
+function fetchPosts(limit, page) {
+  fetch('https://jsonplaceholder.typicode.com/posts' + `?_limit=${limit}&_page=${page}`)
+    .then((response) => {
+      totalPages.value = Math.ceil(response.headers.get('X-Total-Count') / limit.value)
+      return response.json()
+    })
+    .then((data) => {
+      posts.value = data
+      isPostsLoaded.value = true
+    })
+    .catch((error) => {
+      isFetchedPosts.value = false
+      console.log('Данные не подгрузились', error)
+    })
+}
+
 onMounted(() => {
-  setTimeout(() => {
-    fetchPosts(10, 1) //limit = 10, page = 1
-      .then((data) => {
-        posts.value = data
-        isPostsLoaded.value = true
-      })
-      .catch((error) => {
-        isFetchedPosts.value = false
-        console.log('Данные не подгрузились', error)
-      })
-  }, 0)
+  fetchPosts(limit, page)
 })
 
 // ================= list changes ================ //
@@ -123,10 +136,45 @@ const sortedAndSearchedPost = computed(() => {
       <p>Данные проебались. Не будет ОК.</p>
       <p>Здесь могла быть ваша реклама</p>
     </div>
+
+    <!-- Пагинация -->
+    <ul class="pagination">
+      <li v-for="numPage in totalPages" :key="numPage" class="pagination__item">
+        {{ numPage }}
+      </li>
+    </ul>
   </main>
 </template>
 
 <style lang="scss">
+.pagination {
+  display: flex;
+  padding: 20px;
+  margin: 50px 0 0;
+
+  &__item {
+    color: pink;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 8px 12px;
+    transition: 0.3s all;
+    cursor: pointer;
+
+    &--current {
+      color: white;
+      border: 1px solid white;
+    }
+
+    &:hover {
+      color: white;
+      border: 1px solid white;
+    }
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}
+
 .main {
   display: flex;
   flex-direction: column;
