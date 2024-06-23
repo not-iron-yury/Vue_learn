@@ -4,7 +4,6 @@ import { onMounted, watch, computed, ref } from 'vue'
 //import { fetchPosts } from './data/Posts'
 import PostsList from './components/PostsList.vue'
 import NewPost from './components/NewPost.vue'
-import MyInput from './components/UI/MyInput.vue'
 
 const showDialog = ref(false)
 //------------------------------------------------//
@@ -148,6 +147,7 @@ const sortedAndSearchedPost = computed(() => {
     </div>
 
     <!-- Пагинация -->
+    <MyPagination />
     <ul class="pagination">
       <li
         v-for="numPage in totalPages"
