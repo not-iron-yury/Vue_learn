@@ -19,14 +19,9 @@ const selectOptions = [
 ]
 const selectedSort = ref('')
 
-// ================== pagination ================== //
-const limit = ref(10)
-const page = ref(1)
-const totalPages = ref(0)
 // ==================== fetch ==================== //
-
-function fetchPosts(limit, page) {
-  fetch('https://jsonplaceholder.typicode.com/posts' + `?_limit=${limit}&_page=${page}`)
+function fetchPosts() {
+  fetch('https://jsonplaceholder.typicode.com/posts' + `?_limit=${limit.value}&_page=${page.value}`)
     .then((response) => {
       totalPages.value = Math.ceil(response.headers.get('X-Total-Count') / limit.value)
       return response.json()
@@ -42,7 +37,22 @@ function fetchPosts(limit, page) {
 }
 
 onMounted(() => {
-  fetchPosts(limit, page)
+  fetchPosts()
+})
+
+// ================== pagination ================== //
+const limit = ref(10)
+const page = ref(1)
+const totalPages = ref(0)
+
+const changeNumPage = (numberPage) => {
+  page.value = numberPage
+  //fetchPosts()
+}
+
+// можно вызвать fetchPosts() в обработчикее выше, и этим ограничиться
+watch(page, () => {
+  fetchPosts()
 })
 
 // ================= list changes ================ //
@@ -139,7 +149,13 @@ const sortedAndSearchedPost = computed(() => {
 
     <!-- Пагинация -->
     <ul class="pagination">
-      <li v-for="numPage in totalPages" :key="numPage" class="pagination__item">
+      <li
+        v-for="numPage in totalPages"
+        :key="numPage"
+        class="pagination__item"
+        :class="{ 'pagination__item--current': numPage === page ? true : false }"
+        @click="changeNumPage(numPage)"
+      >
         {{ numPage }}
       </li>
     </ul>

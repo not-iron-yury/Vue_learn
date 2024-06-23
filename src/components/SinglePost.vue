@@ -9,7 +9,7 @@ const emit = defineEmits(['remove'])
 <template>
   <li class="post">
     <div class="post__body">
-      <p class="post__title"><span>Название:</span> {{ post.title }}</p>
+      <p class="post__title">{{ post.id }}. <span>Название:</span> {{ post.title }}</p>
       <p class="post__text">
         <span>Описание:</span>
         {{ post.body }}
