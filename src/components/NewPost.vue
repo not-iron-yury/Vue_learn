@@ -4,7 +4,7 @@ import MyInput from './UI/MyInput.vue'
 
 const inputTitle = ref('')
 const inputText = ref('')
-let id = 100
+let id = 200
 
 const emit = defineEmits(['newpost'])
 

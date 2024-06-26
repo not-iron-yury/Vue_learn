@@ -44,11 +44,13 @@ const limit = ref(10)
 const page = ref(1)
 const totalPages = ref(0)
 
+// переключение номера страницы
+// закоментил для того, что бы добавить динамическую подгрузку страниц
+
 const changeNumPage = (numberPage) => {
   page.value = numberPage
   //fetchPosts()
 }
-
 // можно вызвать fetchPosts() в обработчикее выше, и этим ограничиться
 watch(page, () => {
   fetchPosts()
@@ -147,18 +149,12 @@ const sortedAndSearchedPost = computed(() => {
     </div>
 
     <!-- Пагинация -->
-    <MyPagination />
-    <ul class="pagination">
-      <li
-        v-for="numPage in totalPages"
-        :key="numPage"
-        class="pagination__item"
-        :class="{ 'pagination__item--current': numPage === page ? true : false }"
-        @click="changeNumPage(numPage)"
-      >
-        {{ numPage }}
-      </li>
-    </ul>
+    <!-- При пользовательском событии передаваемые из дочернего компонента данные сразу попадают в обработчик
+    Вызыывать обработчик в пользовательском событии нельзя, как и в стандартных. Поэтому либо оборачиваем стрелочной,
+    либо вызываем не передавая данные. Но обработчик обязательно должен иметь параметр 
+    принимающий данные от дочернего компонента -->
+    <!-- <MyPagination :totalPages="totalPages" :page="page" @changePage="(val) => changeNumPage(val)" /> -->
+    <MyPagination :totalPages="totalPages" :page="page" @changePage="changeNumPage" />
   </main>
 </template>
 
