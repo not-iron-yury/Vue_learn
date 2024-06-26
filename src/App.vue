@@ -35,8 +35,41 @@ function fetchPosts() {
     })
 }
 
+function fetchAllPosts() {
+  page.value += 1
+  fetch('https://jsonplaceholder.typicode.com/posts' + `?_limit=${limit.value}&_page=${page.value}`)
+    .then((response) => {
+      totalPages.value = Math.ceil(response.headers.get('X-Total-Count') / limit.value)
+      return response.json()
+    })
+    .then((data) => {
+      posts.value = [...posts.value, ...data]
+      isPostsLoaded.value = true
+    })
+    .catch((error) => {
+      isFetchedPosts.value = false
+      console.log('Данные не подгрузились', error)
+    })
+}
+const targetObs = ref(null)
+
 onMounted(() => {
   fetchPosts()
+
+  // ============= observer ============= //
+  const options = {
+    rootMargin: '0px',
+    threshold: 1.0
+  }
+
+  const callback = (entries, observer) => {
+    if (entries[0].isIntersecting && page.value < totalPages.value) {
+      fetchAllPosts()
+    }
+  }
+  const observer = new IntersectionObserver(callback, options)
+  observer.observe(targetObs.value)
+  // ============= /observer ============= //
 })
 
 // ================== pagination ================== //
@@ -46,15 +79,14 @@ const totalPages = ref(0)
 
 // переключение номера страницы
 // закоментил для того, что бы добавить динамическую подгрузку страниц
-
-const changeNumPage = (numberPage) => {
-  page.value = numberPage
-  //fetchPosts()
-}
+// const changeNumPage = (numberPage) => {
+//   page.value = numberPage
+//   //fetchPosts()
+// }
 // можно вызвать fetchPosts() в обработчикее выше, и этим ограничиться
-watch(page, () => {
-  fetchPosts()
-})
+// watch(page, () => {
+//   fetchPosts()
+// })
 
 // ================= list changes ================ //
 const addNewPost = (newpost) => {
@@ -112,6 +144,8 @@ const sortedAndSearchedPost = computed(() => {
   }
 })
 
+// ==================== observer ==================== //
+
 // ================================================ //
 </script>
 
@@ -153,8 +187,15 @@ const sortedAndSearchedPost = computed(() => {
     Вызыывать обработчик в пользовательском событии нельзя, как и в стандартных. Поэтому либо оборачиваем стрелочной,
     либо вызываем не передавая данные. Но обработчик обязательно должен иметь параметр 
     принимающий данные от дочернего компонента -->
+
+    <!-- вариант с оберткой -->
     <!-- <MyPagination :totalPages="totalPages" :page="page" @changePage="(val) => changeNumPage(val)" /> -->
-    <MyPagination :totalPages="totalPages" :page="page" @changePage="changeNumPage" />
+
+    <!-- вариант без обертки (нормальный) -->
+    <!-- <MyPagination :totalPages="totalPages" :page="page" @changePage="changeNumPage" /> -->
+    <!-- Закоментил для того, что бы добавить бесконечную ленту -->
+
+    <div ref="targetObs" class="observer"></div>
   </main>
 </template>
 
@@ -247,5 +288,11 @@ const sortedAndSearchedPost = computed(() => {
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.observer {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 </style>
