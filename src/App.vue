@@ -1,38 +1,37 @@
 <script setup>
-import { computed, ref } from 'vue'
-
-import Blog from './pages/Blog.vue'
-import Main from './pages/Main.vue'
-import About from './pages/About.vue'
-
-const routes = {
-  '/': Main,
-  '/about': About,
-  '/blog': Blog
-}
-
-const currentPath = ref(window.location.hash)
-
-window.addEventListener('hashchange', () => {
-  currentPath.value = window.location.hash
-})
-
-const currentView = computed(() => {
-  return routes[currentPath.value.slice(1) || '/'] || NotFound
-})
+import Navbar from '@/components/UI/Navbar.vue'
 </script>
 
 <template>
-  <div class="container">
-    <a href="/">Главная страница</a> | <a href="#/about">О нас</a> | <a href="#/blog">Блог</a> |
-    <!-- <a href="/non-existent-path">Несуществующая ссылка</a> -->
-    <component :is="currentView" />
+  <div class="main">
+    <navbar></navbar>
+    <router-view></router-view>
   </div>
 </template>
 
-<style>
-.container {
+<style lang="scss">
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 800px;
+  padding: 25px 15px;
   margin: 0 auto;
+
+  &__title {
+    font-size: 40px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 20px auto 30px;
+  }
+  &__menu {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
 }
 </style>

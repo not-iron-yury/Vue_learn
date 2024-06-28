@@ -2,8 +2,9 @@
 import { onMounted, watch, computed, ref } from 'vue'
 // import { posts } from './data/TestPosts'
 //import { fetchPosts } from './data/Posts'
-import NewPost from '../components/NewPost.vue'
 import PostsList from '../components/PostsList.vue'
+import NewPost from '../components/NewPost.vue'
+// import Navbar from '@/components/UI/Navbar.vue'
 
 const showDialog = ref(false)
 //------------------------------------------------//
@@ -59,18 +60,18 @@ onMounted(() => {
   fetchPosts()
 
   // ============= observer ============= //
-  const options = {
-    rootMargin: '0px',
-    threshold: 1.0
-  }
+  // const options = {
+  //   rootMargin: '0px',
+  //   threshold: 1.0
+  // }
 
-  const callback = (entries, observer) => {
-    if (entries[0].isIntersecting && page.value < totalPages.value) {
-      fetchAllPosts()
-    }
-  }
-  const observer = new IntersectionObserver(callback, options)
-  observer.observe(targetObs.value)
+  // const callback = (entries, observer) => {
+  //   if (entries[0].isIntersecting && page.value < totalPages.value) {
+  //     fetchAllPosts()
+  //   }
+  // }
+  // const observer = new IntersectionObserver(callback, options)
+  // observer.observe(targetObs.value)
   // ============= /observer ============= //
 })
 
@@ -151,6 +152,8 @@ const sortedAndSearchedPost = computed(() => {
 
 <template>
   <main class="main" @keydown="hideDialog">
+    <!-- <Navbar /> -->
+
     <MyDialog v-model:show="showDialog">
       <NewPost @newpost="addNewPost" />
     </MyDialog>
@@ -229,30 +232,6 @@ const sortedAndSearchedPost = computed(() => {
   }
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 800px;
-  padding: 25px 15px;
-  margin: 0 auto;
-
-  &__title {
-    font-size: 40px;
-    font-weight: 500;
-    text-align: center;
-    text-transform: uppercase;
-    margin: 20px auto 30px;
-  }
-  &__menu {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 10px 0;
-    margin-bottom: 20px;
-  }
-}
 .input {
   display: flex;
   flex-direction: column;

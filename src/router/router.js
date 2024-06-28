@@ -1,19 +1,25 @@
+import { createRouter, createWebHistory } from 'vue-router'
+
 import Main from '@/pages/Main.vue'
 import About from '@/pages/About.vue'
-
-// const routes = {
-//   '/': Main,
-//   '/about': About
-// }
+import Blog from '@/pages/Blog.vue'
 
 const routes = [
   {
     path: '/',
     component: Main
+  },
+  {
+    path: '/about',
+    component: About
+  },
+  {
+    path: '/blog',
+    component: Blog
   }
 ]
 
-const router = createRouter({
+export const router = createRouter({
   routes,
-  history: createWebHistory(process.env.BASE_URL)
+  history: createWebHistory()
 })

@@ -1,8 +1,8 @@
 <script setup></script>
 
 <template>
-  <div class="container">
-    <h1>О сайте</h1>
+  <div class="main">
+    <h1 class="main__title">О сайте</h1>
   </div>
 </template>
 
