@@ -27,7 +27,12 @@ const createNewPost = () => {
     <!-- / Вариант 1  -->
 
     <!-- Вариант 2  -->
-    <MyInput v-model="inputTitle" :className="'input__title'" :placeholder="'Новый заголовок'" />
+    <MyInput
+      v-focus
+      v-model="inputTitle"
+      :className="'input__title'"
+      :placeholder="'Новый заголовок'"
+    />
     <!-- / Вариант 2  -->
 
     <textarea

@@ -53,13 +53,15 @@ function fetchAllPosts() {
       console.log('Данные не подгрузились', error)
     })
 }
-const targetObs = ref(null)
+// const targetObs = ref(null)
 // ============= / observer ============= //
 
 onMounted(() => {
   fetchPosts()
 
   // ============= observer ============= //
+  // перенесено в /directives/vIntersection
+  //
   // const options = {
   //   rootMargin: '0px',
   //   threshold: 1.0
@@ -74,7 +76,6 @@ onMounted(() => {
   // observer.observe(targetObs.value)
   // ============= /observer ============= //
 })
-
 // ================== pagination ================== //
 const limit = ref(10)
 const page = ref(1)
@@ -195,11 +196,12 @@ const sortedAndSearchedPost = computed(() => {
     <!-- <MyPagination :totalPages="totalPages" :page="page" @changePage="(val) => changeNumPage(val)" /> -->
 
     <!-- вариант без обертки (нормальный) -->
-    <MyPagination :totalPages="totalPages" :page="page" @changePage="changeNumPage" />
+    <!-- <MyPagination :totalPages="totalPages" :page="page" @changePage="changeNumPage" /> -->
 
     <!-- Бесконечная лента. -->
     <!-- Либо бесконечная лента, либо пагинация -->
     <!-- <div ref="targetObs" class="observer"></div> -->
+    <div v-intersection="fetchAllPosts" class="observer"></div>
   </main>
 </template>
 
